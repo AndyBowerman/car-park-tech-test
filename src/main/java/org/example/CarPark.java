@@ -12,15 +12,13 @@ import org.example.Vehicles.Vehicle;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 public class CarPark {
     private int totalCapacity;
-    private int remainingCapacity = 65;
+    private int remainingCapacity;
     private List<ParkingSpaces> parkingSpaces = new ArrayList<>();
     private List<Vehicle> parkedVehicles = new ArrayList<>();
 
-    public void generateCarPark(int smallSpaces, int regularSpaces, int largeSpaces) {
+    public CarPark(int smallSpaces, int regularSpaces, int largeSpaces) {
         int i = 0;
         while (i < smallSpaces) {
             addParkingSpaces(new SmallParkingSpace());
@@ -37,22 +35,22 @@ public class CarPark {
             k++;
         }
         setTotalCapacity();
+        amendCapacity();
     }
 
-    public int getTotalCapacity() {
-        return totalCapacity;
+    public String getTotalCapacity() {
+        return totalCapacity + " spaces in the car park.";
     }
 
-    public void setTotalCapacity() {
+    private void setTotalCapacity() {
         for (int i = 0; i < parkingSpaces.size(); i++) {
             this.totalCapacity += parkingSpaces.get(i).getCapacity();
         }
     }
 
-    /*
-How many vehicles of each type could park and return remainder
-
- */
+    public String getRemainingCapacity() {
+        return remainingCapacity + " spaces available.";
+    }
 
     public String remainingMotorcycleSpaces() {
         int remaining = remainingCapacity / new Motorcycle().getSpacesTaken();
@@ -70,33 +68,85 @@ How many vehicles of each type could park and return remainder
         }
         return "You can fit " + remaining + " more cars with " + leftOver + " small spaces remaining.";
     }
-
     public String remainingVanSpaces() {
         int remaining;
         int leftOver;
-        if(remainingCapacity % 3 == 0) {
+        if(remainingCapacity % 6 == 0) {
             remaining = remainingCapacity / new Van().getSpacesTaken();
             leftOver = 0;
         } else {
-            remaining = remainingCapacity / 3;
-            leftOver = remainingCapacity - (remaining * 3);
+            remaining = remainingCapacity / 6;
+            leftOver = remainingCapacity - (remaining * 6);
         }
         return "You can fit " + remaining + " more vans with " + leftOver + " small spaces remaining.";
     }
-
-    public int amendCapacity() {
+    private void amendCapacity() {
         int count = 0;
         for (int i = 0; i < parkedVehicles.size(); i++) {
             count += parkedVehicles.get(i).getSpacesTaken();
         }
-        return count;
+        remainingCapacity = totalCapacity - count;
     }
-
-    public void addParkedVehicles(Vehicle vehicle) {
-        parkedVehicles.add(vehicle);
+    public void addParkedVehicles(int motorcycles, int cars, int vans) {
+        if((motorcycles + (cars*2) + (vans*6)) > remainingCapacity) {
+            System.out.println("There aren't enough spaces!");
+            System.out.println("There are " + remainingCapacity + " spaces left.");
+        } else {
+            int i = 0;
+            while(i < motorcycles) {
+                parkedVehicles.add(new Motorcycle());
+                i++;
+            }
+            int j = 0;
+            while(j < cars) {
+                parkedVehicles.add(new Car());
+                j++;
+            }
+            int k = 0;
+            while(k < vans) {
+                parkedVehicles.add(new Van());
+                k++;
+            }
+            amendCapacity();
+        }
     }
-
     public void addParkingSpaces(ParkingSpaces space) {
         parkingSpaces.add(space);
+    }
+
+    public boolean isFull() {
+        return remainingCapacity == 0;
+    }
+
+    public boolean isEmpty() {
+        return remainingCapacity == totalCapacity;
+    }
+
+    public String returnRemainingCapacity() {
+        if(isFull()) {
+            return "The car park is full!";
+        } else if(isEmpty()) {
+            return "The car park is empty!";
+        } else {
+            return "There are currently " + (totalCapacity - remainingCapacity) + " spaces occupied, with " + remainingCapacity + " remaining.";
+        }
+    }
+
+    public String returnVehiclesParked() {
+        int motorcycle = 0;
+        int car = 0;
+        int van = 0;
+        for (int i = 0; i < parkedVehicles.size(); i++) {
+            if(parkedVehicles.get(i).getVehicleType().equals("Motorcycle")) {
+                motorcycle++;
+            } else if(parkedVehicles.get(i).getVehicleType().equals("Car")) {
+                car++;
+            } else if(parkedVehicles.get(i).getVehicleType().equals("Van")) {
+                van++;
+            }
+        }
+        return "There are " + motorcycle + " motorcycles taking up " + motorcycle + " spots, " +
+                car + " cars taking up " + car * 2 + " spots and " +
+                van + " vans taking up " + van * 6 + " spots.";
     }
 }
