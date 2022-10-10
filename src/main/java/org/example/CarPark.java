@@ -12,6 +12,8 @@ import org.example.Vehicles.Vehicle;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.example.Vehicles.VehicleType.*;
+
 public class CarPark {
     private int totalCapacity;
     private int remainingCapacity;
@@ -133,20 +135,20 @@ public class CarPark {
     }
 
     public String returnVehiclesParked() {
-        int motorcycle = 0;
-        int car = 0;
-        int van = 0;
+        int motorcycles = 0;
+        int cars = 0;
+        int vans = 0;
         for (int i = 0; i < parkedVehicles.size(); i++) {
-            if(parkedVehicles.get(i).getVehicleType().equals("Motorcycle")) {
-                motorcycle++;
-            } else if(parkedVehicles.get(i).getVehicleType().equals("Car")) {
-                car++;
-            } else if(parkedVehicles.get(i).getVehicleType().equals("Van")) {
-                van++;
+            if(parkedVehicles.get(i).getVehicleType() == motorcycle) {
+                motorcycles++;
+            } else if(parkedVehicles.get(i).getVehicleType().equals(car)) {
+                cars++;
+            } else if(parkedVehicles.get(i).getVehicleType().equals(van)) {
+                vans++;
             }
         }
-        return "There are " + motorcycle + " motorcycles taking up " + motorcycle + " spots, " +
-                car + " cars taking up " + car * 2 + " spots and " +
-                van + " vans taking up " + van * 6 + " spots.";
+        return "There are " + motorcycles + " motorcycles taking up " + motorcycles + " spots, " +
+                cars + " cars taking up " + cars * 2 + " spots and " +
+                vans + " vans taking up " + vans * 6 + " spots.";
     }
 }
