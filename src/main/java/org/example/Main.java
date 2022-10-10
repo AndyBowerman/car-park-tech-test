@@ -20,12 +20,23 @@ car park holds number available
     - says how many of each vehicle it can fit as a max e.g. 10 vans or 30 cars or motorcycles
 
 each vehicle represents a number
-
+Must generate car park
 
  */
 
+import org.example.Vehicles.Car;
+import org.example.Vehicles.Motorcycle;
+
 public class Main {
     public static void main(String[] args) {
-
+        CarPark carPark = new CarPark();
+        carPark.generateCarPark(1, 1, 1);
+        System.out.println(carPark.getTotalCapacity());
+        System.out.println(carPark.remainingMotorcycleSpaces());
+        System.out.println(carPark.remainingCarSpaces());
+        System.out.println(carPark.remainingVanSpaces());
+        System.out.println("----------------------------");
+        carPark.addParkedVehicles(new Car());
+        System.out.println(carPark.amendCapacity());
     }
 }
