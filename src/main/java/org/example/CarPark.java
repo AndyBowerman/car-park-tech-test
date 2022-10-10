@@ -43,17 +43,14 @@ public class CarPark {
     public String getTotalCapacity() {
         return totalCapacity + " spaces in the car park.";
     }
-
     private void setTotalCapacity() {
         for (int i = 0; i < parkingSpaces.size(); i++) {
             this.totalCapacity += parkingSpaces.get(i).getCapacity();
         }
     }
-
     public String getRemainingCapacity() {
         return remainingCapacity + " spaces available.";
     }
-
     public String remainingMotorcycleSpaces() {
         int remaining = remainingCapacity / new Motorcycle().getSpacesTaken();
         return "You can fit " + remaining + " more motorcycles with no spaces remaining.";
